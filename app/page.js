@@ -1,5 +1,4 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { auth, currentUser } from "@clerk/nextjs";
 import { getFeeds } from "./action";
 import PostCard from "@/components/PostCard";
 

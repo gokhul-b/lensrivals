@@ -10,14 +10,17 @@ const ContestCard = ({ id, contest }) => {
         <div className="w-full p-8">
           <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold flex items-center justify-between">
             <p>#{id}</p>
-            <div>
+            <div className="bg-indigo-700 px-3 py-2.5 rounded-md text-white text-xs hover:bg-indigo-500">
               <Link href={`live/${id}`}>Join Contest</Link>
             </div>
           </div>
-          <p>
+          <p className="mt-2">
             Title: <span className="text-muted-foreground">{title}</span>
           </p>
-          <p className="mt-2 ">Description: {description}</p>
+          <p className="mt-2">
+            Description:{" "}
+            <span className="text-muted-foreground ">{description}</span>
+          </p>
           <div className="flex mt-2 space-x-6">
             <div>
               <span className="">Start Date: </span>

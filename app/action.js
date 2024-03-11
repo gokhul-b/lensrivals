@@ -164,3 +164,44 @@ export const addToMyPosts = async (userId, postId) => {
     console.error("Error updating posts:", error);
   }
 };
+
+export const getJoinStatus = async (contestId, userId) => {
+  const docRef = doc(db, "competitions", contestId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let participants = docSnap.data().participants;
+    let isJoined = participants.includes(userId);
+    console.log(isJoined);
+    return isJoined;
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+    return "No such document!";
+  }
+};
+
+export const getMyPosts = async (userId) => {
+  const docRef = doc(db, "myposts", userId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let myposts = docSnap.data().posts;
+    return myposts;
+  } else {
+    console.log("No such document!");
+    let noPosts = [];
+    return noPosts;
+  }
+};
+
+export const getImage = async (postId) => {
+  // console.log(postId);
+  const docRef = doc(db, "posts", postId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let imgUrl = docSnap.data().imgUrl;
+    return imgUrl;
+  } else {
+    console.log("No such document!");
+    return "No such document!";
+  }
+};

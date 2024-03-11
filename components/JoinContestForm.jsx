@@ -3,6 +3,7 @@ import {
   addToMyPosts,
   deleteImage,
   generateRandomId,
+  getJoinStatus,
   joinContest,
   updateContestParticipants,
 } from "@/app/action";
@@ -34,6 +35,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [dateTime, setDateTime] = useState(new Date().toISOString());
   const router = useRouter();
+  const [isJoined, setIsJoined] = useState(false);
   const [form, setForm] = useState({
     caption: "",
     location: "",
@@ -46,8 +48,13 @@ const JoinContestForm = ({ contestId, username, userId }) => {
     timestamp: dateTime,
   });
 
-  // console.log(form);
-
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getJoinStatus(contestId, userId);
+      setIsJoined(res);
+    };
+    fetchData();
+  }, []);
   useEffect(() => {
     if (uploadState === "running") {
       const timer = setTimeout(() => {
@@ -132,109 +139,117 @@ const JoinContestForm = ({ contestId, username, userId }) => {
 
   return (
     <div>
-      <div className="mb-8">
-        <Button
-          onClick={() => {
-            hanleRemove(), router.push("/live");
-          }}
-          className="bg-indigo-700 hover:bg-indigo-600"
-        >
-          Back
-        </Button>
-      </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Enter the Contest with Your Best Shot!</CardTitle>
-          <CardDescription>
-            By uploading your image, you're joining the contest! Your photo will
-            be showcased to the community, and its success depends on the likes
-            it receives. Are you ready to make your mark?
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="w-full flex space-x-8 mt-4">
-            <div>
-              <div className="w-[400px] h-[400px] border rounded-lg shadow-md flex items-center justify-center relative">
-                {imageUrl ? (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Image
-                      src={imageUrl}
-                      alt=""
-                      fill={true}
-                      style={{ objectFit: "contain", padding: "24px" }}
-                      loading="lazy"
-                    />
-                  </div>
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center px-8">
-                    {uploadState === "running" ? (
-                      <Progress value={progressState} />
+      {isJoined ? (
+        <p>Already Joined</p>
+      ) : (
+        <div>
+          <div className="mb-8">
+            <Button
+              onClick={() => {
+                hanleRemove(), router.push("/live");
+              }}
+              className="bg-indigo-700 hover:bg-indigo-600"
+            >
+              Back
+            </Button>
+          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Enter the Contest with Your Best Shot!</CardTitle>
+              <CardDescription>
+                By uploading your image, you're joining the contest! Your photo
+                will be showcased to the community, and its success depends on
+                the likes it receives. Are you ready to make your mark?
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="w-full flex space-x-8 mt-4">
+                <div>
+                  <div className="w-[400px] h-[400px] border rounded-lg shadow-md flex items-center justify-center relative">
+                    {imageUrl ? (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Image
+                          src={imageUrl}
+                          alt=""
+                          fill={true}
+                          style={{ objectFit: "contain", padding: "24px" }}
+                          loading="lazy"
+                        />
+                      </div>
                     ) : (
-                      <ImgIcon />
+                      <div className="absolute inset-0 flex items-center justify-center px-8">
+                        {uploadState === "running" ? (
+                          <Progress value={progressState} />
+                        ) : (
+                          <ImgIcon />
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </div>
-              <div className="mt-8 flex items-center justify-between">
-                <div>
+                  <div className="mt-8 flex items-center justify-between">
+                    <div>
+                      <Button
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                        className="bg-indigo-600 hover:bg-indigo-500"
+                        disabled={uploadState === "completed"}
+                      >
+                        Add Image
+                      </Button>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: "none" }}
+                        onChange={handleImageUpload}
+                      />
+                    </div>
+                    <div>
+                      <Button onClick={hanleRemove} variant="destructive">
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <form
+                  action={handleFormSubmit}
+                  className="flex flex-col w-full space-y-12"
+                >
+                  <div className="space-y-4">
+                    <div className="flex flex-col w-full space-y-4">
+                      <Label htmlFor="message">Caption</Label>
+                      <Textarea
+                        placeholder="Type your message here."
+                        id="message"
+                        onChange={(e) => {
+                          setForm({ ...form, caption: e.target.value });
+                        }}
+                      />
+                    </div>
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                      <Label htmlFor="location">Location</Label>
+                      <Input
+                        type="location"
+                        id="location"
+                        placeholder="Type your location here."
+                        onChange={(e) => {
+                          setForm({ ...form, location: e.target.value });
+                        }}
+                      />
+                    </div>
+                  </div>
                   <Button
-                    onClick={() => document.getElementById("fileInput").click()}
+                    type="submit"
                     className="bg-indigo-600 hover:bg-indigo-500"
-                    disabled={uploadState === "completed"}
                   >
-                    Add Image
+                    Join
                   </Button>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    style={{ display: "none" }}
-                    onChange={handleImageUpload}
-                  />
-                </div>
-                <div>
-                  <Button onClick={hanleRemove} variant="destructive">
-                    Remove
-                  </Button>
-                </div>
+                </form>
               </div>
-            </div>
-            <form
-              action={handleFormSubmit}
-              className="flex flex-col w-full space-y-12"
-            >
-              <div className="space-y-4">
-                <div className="flex flex-col w-full space-y-4">
-                  <Label htmlFor="message">Caption</Label>
-                  <Textarea
-                    placeholder="Type your message here."
-                    id="message"
-                    onChange={(e) => {
-                      setForm({ ...form, caption: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    type="location"
-                    id="location"
-                    placeholder="Type your location here."
-                    onChange={(e) => {
-                      setForm({ ...form, location: e.target.value });
-                    }}
-                  />
-                </div>
-              </div>
-              <Button
-                type="submit"
-                className="bg-indigo-600 hover:bg-indigo-500"
-              >
-                Join
-              </Button>
-            </form>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

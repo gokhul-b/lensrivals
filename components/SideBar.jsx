@@ -9,9 +9,9 @@ const SideBar = () => {
           <p className="font-bold text-xl">
             Lens<span className="text-indigo-600">Rivals</span>
           </p>
-          <div className="space-y-2 py-8 w-full">
+          <div className="space-y-2 py-8 w-full font-semibold">
             <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
-              <Link href="/">Feeds</Link>
+              <Link href="/">Home</Link>
             </div>
             <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
               <Link href="/myposts">My Posts</Link>

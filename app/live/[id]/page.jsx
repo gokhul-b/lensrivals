@@ -7,6 +7,7 @@ const page = async ({ params }) => {
   const { userId } = auth();
   const user = await currentUser();
   console.log(params.id);
+
   return (
     <div className="py-8 px-8 space-y-8">
       <JoinContestForm
