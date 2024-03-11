@@ -2,37 +2,30 @@
 import Liked from "./Liked";
 import CommentIcon from "@/svg/CommentIcon";
 import NotLiked from "./NotLiked";
-import { getLikeStatus, updateLikeStatus } from "@/app/action";
+import { getLikeCount, getLikeStatus, updateLikeStatus } from "@/app/action";
 import { useEffect, useState } from "react";
 
-const LikeCommentBar = ({ postId, uid, likeStatus }) => {
+const LikeCommentBar = ({ postId, likeStatus, likesCount }) => {
   const [isLiked, setIsLIked] = useState(likeStatus);
+  const [likesCnt, setLikesCnt] = useState(likesCount);
   useEffect(() => {
     // const fetchData = async () => {
     //   try {
-    //     const response = await getLikeStatus(postId, uid);
-    //     setIsLIked(response);
-    //     console.log(isLiked);
+    //     const cnt = await getLikeCount(postId);
+    //     console.log(cnt);
     //   } catch (error) {
     //     console.error("Error fetching data:", error);
     //   }
     // };
     // fetchData();
+    setLikesCnt(likesCount);
     setIsLIked(likeStatus);
-  }, [likeStatus]);
-
-  // const disLike = async () => {
-  //   try {
-  //     const response = await updateLikeStatus(postId, uid, false);
-  //     setLikeStatus(false);
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  }, [likeStatus, likesCount]);
   return (
     <div className="flex items-center space-x-4">
-      <div className="cursor-pointer">{isLiked ? <Liked /> : <NotLiked />}</div>
+      <div className="flex space-x-2 items-center">
+        {isLiked ? <Liked /> : <NotLiked />} <span>{likesCnt}</span>
+      </div>
       <CommentIcon />
     </div>
   );

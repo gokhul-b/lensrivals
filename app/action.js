@@ -121,7 +121,7 @@ export const updateLikeStatus = async (docId, userId, val) => {
       transaction.update(sfDocRef, { likes: updatedLikes });
     });
     console.log("Transaction successfully committed!");
-    return "Transaction successfully committed!";
+    return "Like updated successfullty";
   } catch (e) {
     console.log("Transaction failed: ", e);
     return e;
@@ -136,6 +136,26 @@ export const getLikeStatus = async (postId, uid) => {
     // console.log("Document data:", docSnap.data());
     console.log(likeStatus);
     return likeStatus;
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+    return "No such document!";
+  }
+};
+
+export const getLikeCount = async (postId) => {
+  const docRef = doc(db, "posts", postId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let likes = docSnap.data().likes;
+    let count = 0;
+    for (const key in likes) {
+      if (likes[key] === true) {
+        count++;
+      }
+    }
+    console.log(count);
+    return count;
   } else {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");

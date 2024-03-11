@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LikeCommentBar from "./LikeCommentBar";
-import { getLikeStatus, updateLikeStatus } from "@/app/action";
+import { getLikeCount, getLikeStatus, updateLikeStatus } from "@/app/action";
 import { useEffect, useState } from "react";
 
 const PostCard = ({ feed, docId, currentUser }) => {
@@ -18,11 +18,15 @@ const PostCard = ({ feed, docId, currentUser }) => {
     userId,
   } = feed;
   const [likeStatus, setLikeStatus] = useState(false);
+  const [likesCount, setLikesCount] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getLikeStatus(docId, currentUser);
+        const cnt = await getLikeCount(docId);
         setLikeStatus(response);
+        setLikesCount(cnt);
         console.log(likeStatus);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -30,15 +34,16 @@ const PostCard = ({ feed, docId, currentUser }) => {
     };
     fetchData();
   }, []);
-  const handleDoubleClick = () => {
+  const handleDoubleClick = async () => {
     try {
-      // setLikeStatus(!likeStatus);
-      const response = updateLikeStatus(docId, currentUser, !likeStatus).then(
-        () => {
-          setLikeStatus(!likeStatus);
-        }
-      );
-      console.log(response);
+      setLikeStatus(!likeStatus);
+      const response = await updateLikeStatus(docId, currentUser, !likeStatus);
+      console.log("while liking", likes);
+      if (!likeStatus == true) {
+        setLikesCount(likesCount + 1);
+      } else {
+        setLikesCount(likesCount - 1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +74,7 @@ const PostCard = ({ feed, docId, currentUser }) => {
             src={imgUrl}
             alt=""
             fill={true}
+            sizes=""
             style={{ objectFit: "contain" }}
             priority={false}
             loading="lazy"
@@ -76,7 +82,12 @@ const PostCard = ({ feed, docId, currentUser }) => {
         </div>
       </div>
       <div>
-        <LikeCommentBar postId={docId} uid={userId} likeStatus={likeStatus} />
+        <LikeCommentBar
+          postId={docId}
+          uid={userId}
+          likeStatus={likeStatus}
+          likesCount={likesCount}
+        />
       </div>
       <Separator />
     </div>
