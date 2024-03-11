@@ -19,7 +19,19 @@ const PostCard = ({ feed, docId, currentUser }) => {
   } = feed;
   const [likeStatus, setLikeStatus] = useState(false);
   const [likesCount, setLikesCount] = useState("");
+  const [taps, setTaps] = useState(0);
 
+  const handleTouchStart = () => {
+    // Increase tap count when touch starts
+    setTaps((prevTaps) => prevTaps + 1);
+  };
+
+  const handleTouchEnd = () => {
+    // Reset tap count when touch ends
+    setTimeout(() => {
+      setTaps(0);
+    }, 300); // Adjust the delay as needed to define the maximum time between taps
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,6 +81,13 @@ const PostCard = ({ feed, docId, currentUser }) => {
         <div
           className="absolute inset-0 flex items-center justify-center border"
           onDoubleClick={handleDoubleClick}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onClick={() => {
+            if (taps === 2) {
+              handleDoubleClick();
+            }
+          }}
         >
           <Image
             src={imgUrl}
