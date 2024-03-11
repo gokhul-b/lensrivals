@@ -6,7 +6,7 @@ import LikeCommentBar from "./LikeCommentBar";
 import { getLikeStatus, updateLikeStatus } from "@/app/action";
 import { useEffect, useState } from "react";
 
-const PostCard = ({ feed, docId }) => {
+const PostCard = ({ feed, docId, currentUser }) => {
   const {
     userName,
     timestamp,
@@ -21,7 +21,7 @@ const PostCard = ({ feed, docId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getLikeStatus(docId, userId);
+        const response = await getLikeStatus(docId, currentUser);
         setLikeStatus(response);
         console.log(likeStatus);
       } catch (error) {
@@ -33,9 +33,11 @@ const PostCard = ({ feed, docId }) => {
   const handleDoubleClick = () => {
     try {
       // setLikeStatus(!likeStatus);
-      const response = updateLikeStatus(docId, userId, !likeStatus).then(() => {
-        setLikeStatus(!likeStatus);
-      });
+      const response = updateLikeStatus(docId, currentUser, !likeStatus).then(
+        () => {
+          setLikeStatus(!likeStatus);
+        }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
