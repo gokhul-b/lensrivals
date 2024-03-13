@@ -36,6 +36,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
   const [dateTime, setDateTime] = useState(new Date().toISOString());
   const router = useRouter();
   const [isJoined, setIsJoined] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     caption: "",
     location: "",
@@ -55,6 +56,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
     };
     fetchData();
   }, []);
+
   useEffect(() => {
     if (uploadState === "running") {
       const timer = setTimeout(() => {
@@ -89,7 +91,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
         }
       },
       (error) => {
-        console.error(error);
+        //console.error(error);
         setUploadState(error);
       },
       () => {
@@ -97,11 +99,11 @@ const JoinContestForm = ({ contestId, username, userId }) => {
           .then((downloadURL) => {
             setImageUrl(downloadURL);
             setForm({ ...form, imgUrl: downloadURL });
-            console.log(form);
+            //console.log(form);
             setUploadState("completed");
           })
           .catch((error) => {
-            console.error(error);
+            //console.error(error);
             setUploadState("error");
           });
       }
@@ -119,21 +121,29 @@ const JoinContestForm = ({ contestId, username, userId }) => {
   };
 
   const handleFormSubmit = async () => {
+    if (imageUrl === "" || form.caption === "" || form.location === "") {
+      alert("Some inputs are unfilled");
+      return;
+    }
     setForm({ ...form, timestamp: dateTime });
     try {
-      console.log(form);
+      setIsLoading(true);
+      //console.log(form);
       const postId = await joinContest(form);
+      console.log("postId => ", postId);
       const responseForContestUpdate = await updateContestParticipants(
         userId,
-        contestId
+        contestId,
+        postId
       );
-      console.log(responseForContestUpdate);
-      console.log("postId => ", postId);
+      console.log("responseForContestUpdate => ", responseForContestUpdate);
       const responseForMyPosts = await addToMyPosts(userId, postId);
       console.log(responseForMyPosts);
-      router.push("/success");
     } catch (error) {
-      console.error(error);
+      //console.error(error);
+    } finally {
+      setIsLoading(false);
+      router.push("/success");
     }
   };
 
@@ -174,6 +184,9 @@ const JoinContestForm = ({ contestId, username, userId }) => {
                           fill={true}
                           style={{ objectFit: "contain", padding: "24px" }}
                           loading="lazy"
+                          priority={false}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={100}
                         />
                       </div>
                     ) : (
@@ -211,40 +224,39 @@ const JoinContestForm = ({ contestId, username, userId }) => {
                     </div>
                   </div>
                 </div>
-                <form
-                  action={handleFormSubmit}
-                  className="flex flex-col w-full space-y-12"
-                >
-                  <div className="space-y-4">
-                    <div className="flex flex-col w-full space-y-4">
-                      <Label htmlFor="message">Caption</Label>
-                      <Textarea
-                        placeholder="Type your message here."
-                        id="message"
-                        onChange={(e) => {
-                          setForm({ ...form, caption: e.target.value });
-                        }}
-                      />
+                <div className="w-full flex flex-col space-y-12">
+                  <form className="flex flex-col w-full space-y-12">
+                    <div className="space-y-4">
+                      <div className="flex flex-col w-full space-y-4">
+                        <Label htmlFor="message">Caption</Label>
+                        <Textarea
+                          placeholder="Type your message here."
+                          id="message"
+                          onChange={(e) => {
+                            setForm({ ...form, caption: e.target.value });
+                          }}
+                        />
+                      </div>
+                      <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Label htmlFor="location">Location</Label>
+                        <Input
+                          type="location"
+                          id="location"
+                          placeholder="Type your location here."
+                          onChange={(e) => {
+                            setForm({ ...form, location: e.target.value });
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                      <Label htmlFor="location">Location</Label>
-                      <Input
-                        type="location"
-                        id="location"
-                        placeholder="Type your location here."
-                        onChange={(e) => {
-                          setForm({ ...form, location: e.target.value });
-                        }}
-                      />
-                    </div>
-                  </div>
+                  </form>
                   <Button
-                    type="submit"
+                    onClick={handleFormSubmit}
                     className="bg-indigo-600 hover:bg-indigo-500"
                   >
-                    Join
+                    {isLoading ? "Joining..." : "Join"}
                   </Button>
-                </form>
+                </div>
               </div>
             </CardContent>
           </Card>

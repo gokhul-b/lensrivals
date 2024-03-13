@@ -15,10 +15,9 @@ export const getLiveCompList = async () => {
   try {
     const currentDate = new Date();
     const formattedCurrentDate = currentDate.toISOString().split("T")[0];
-    const q = query(
-      collection(db, "competitions"),
-      where("endDate", ">=", formattedCurrentDate)
-    );
+    console.log(typeof formattedCurrentDate);
+    const docRefs = collection(db, "competitions");
+    const q = query(docRefs, where("endDate", ">=", formattedCurrentDate));
     const querySnapshot = await getDocs(q);
     const liveComps = [];
     querySnapshot.forEach((doc) => {
@@ -27,9 +26,10 @@ export const getLiveCompList = async () => {
         data: doc.data(),
       });
     });
+    console.log("success");
     return liveComps;
   } catch (error) {
-    console.error(error);
+    //console.error(error);
     return error;
   }
 };
@@ -59,7 +59,7 @@ export const deleteImage = (filename) => {
 export const joinContest = async (form) => {
   try {
     const docRef = await addDoc(collection(db, "posts"), form);
-    console.log(docRef.id);
+    //console.log(docRef.id);
     const postId = docRef.id;
     return postId;
   } catch (e) {
@@ -67,9 +67,10 @@ export const joinContest = async (form) => {
   }
 };
 
-export const updateContestParticipants = async (userId, contestId) => {
+export const updateContestParticipants = async (userId, contestId, postId) => {
   const sfDocRef = doc(db, "competitions", contestId);
   let updatedparticipants = [];
+  let updatedPostIds = [];
   try {
     await runTransaction(db, async (transaction) => {
       const sfDoc = await transaction.get(sfDocRef);
@@ -77,13 +78,18 @@ export const updateContestParticipants = async (userId, contestId) => {
         throw "Document does not exist!";
       }
       updatedparticipants = sfDoc.data().participants;
+      updatedPostIds = sfDoc.data().postIds;
+      updatedPostIds.push(postId);
       updatedparticipants.push(userId);
-      transaction.update(sfDocRef, { participants: updatedparticipants });
+      transaction.update(sfDocRef, {
+        participants: updatedparticipants,
+        postIds: updatedPostIds,
+      });
     });
-    console.log("Transaction successfully committed!");
-    return "Transaction successfully committed!";
+    //console.log("Transaction successfully committed!");
+    return "Participant is joined the Contest";
   } catch (e) {
-    console.log("Transaction failed: ", e);
+    //console.log("Transaction failed: ", e);
     return e;
   }
 };
@@ -95,7 +101,7 @@ export const getFeeds = async () => {
     const querySnapshot = await getDocs(q);
     const feeds = [];
     querySnapshot.forEach((doc) => {
-      // console.log(doc.data());
+      //console.log(doc.data());
       feeds.push({
         id: doc.id,
         data: doc.data(),
@@ -120,10 +126,10 @@ export const updateLikeStatus = async (docId, userId, val) => {
       updatedLikes[userId] = val;
       transaction.update(sfDocRef, { likes: updatedLikes });
     });
-    console.log("Transaction successfully committed!");
+    //console.log("Transaction successfully committed!");
     return "Like updated successfullty";
   } catch (e) {
-    console.log("Transaction failed: ", e);
+    //console.log("Transaction failed: ", e);
     return e;
   }
 };
@@ -133,12 +139,12 @@ export const getLikeStatus = async (postId, uid) => {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     let likeStatus = docSnap.data().likes[uid];
-    // console.log("Document data:", docSnap.data());
-    console.log(likeStatus);
+    //console.log("Document data:", docSnap.data());
+    //console.log(likeStatus);
     return likeStatus;
   } else {
     // docSnap.data() will be undefined in this case
-    console.log("No such document!");
+    //console.log("No such document!");
     return "No such document!";
   }
 };
@@ -154,11 +160,19 @@ export const getLikeCount = async (postId) => {
         count++;
       }
     }
-    console.log(count);
     return count;
   } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
+    return "No such document!";
+  }
+};
+
+export const getComments = async (postId) => {
+  const docRef = doc(db, "posts", postId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let comments = docSnap.data().comments;
+    return comments;
+  } else {
     return "No such document!";
   }
 };
@@ -172,16 +186,16 @@ export const addToMyPosts = async (userId, postId) => {
       const userData = userDoc.data();
       const updatedPosts = [...userData.posts, postId];
 
-      await userRef.update({ posts: updatedPosts });
-      console.log(`Post ${postId} added to user ${userId}`);
+      await setDoc(userRef, { posts: updatedPosts });
+      //console.log(`Post ${postId} added to user ${userId}`);
     } else {
       // If the user document doesn't exist, create a new one
       // await userRef.set({ posts: [postId] });
       await setDoc(userRef, { posts: [postId] });
-      console.log(`User ${userId} created with post ${postId}`);
+      //console.log(`User ${userId} created with post ${postId}`);
     }
   } catch (error) {
-    console.error("Error updating posts:", error);
+    //console.error("Error updating posts:", error);
   }
 };
 
@@ -191,11 +205,11 @@ export const getJoinStatus = async (contestId, userId) => {
   if (docSnap.exists()) {
     let participants = docSnap.data().participants;
     let isJoined = participants.includes(userId);
-    console.log(isJoined);
+    //console.log(isJoined);
     return isJoined;
   } else {
     // docSnap.data() will be undefined in this case
-    console.log("No such document!");
+    //console.log("No such document!");
     return "No such document!";
   }
 };
@@ -207,21 +221,42 @@ export const getMyPosts = async (userId) => {
     let myposts = docSnap.data().posts;
     return myposts;
   } else {
-    console.log("No such document!");
+    //console.log("No such document!");
     let noPosts = [];
     return noPosts;
   }
 };
 
 export const getImage = async (postId) => {
-  // console.log(postId);
+  //console.log(postId);
   const docRef = doc(db, "posts", postId);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     let imgUrl = docSnap.data().imgUrl;
     return imgUrl;
   } else {
-    console.log("No such document!");
+    //console.log("No such document!");
     return "No such document!";
+  }
+};
+
+export const addComment = async (postId, currentUser, comment) => {
+  const sfDocRef = doc(db, "posts", postId);
+  let updatedComments = {};
+  try {
+    await runTransaction(db, async (transaction) => {
+      const sfDoc = await transaction.get(sfDocRef);
+      if (!sfDoc.exists()) {
+        throw "Document does not exist!";
+      }
+      updatedComments = sfDoc.data().comments;
+      updatedComments[currentUser] = comment;
+      transaction.update(sfDocRef, { comments: updatedComments });
+    });
+    //console.log("Transaction successfully committed!");
+    return "Comment added successfullty";
+  } catch (e) {
+    //console.log("Transaction failed: ", e);
+    return e;
   }
 };

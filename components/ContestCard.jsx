@@ -3,7 +3,7 @@ import Link from "next/link";
 const ContestCard = ({ id, contest }) => {
   const { title, description, startDate, endDate, prize1, prize2, prize3 } =
     contest;
-  // console.log(contest);
+  //console.log(contest);
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl mb-8 border">
       <div className="md:flex">

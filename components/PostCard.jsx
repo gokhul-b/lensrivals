@@ -6,7 +6,7 @@ import LikeCommentBar from "./LikeCommentBar";
 import { getLikeCount, getLikeStatus, updateLikeStatus } from "@/app/action";
 import { useEffect, useState } from "react";
 
-const PostCard = ({ feed, docId, currentUser }) => {
+const PostCard = ({ feed, docId, currentUser, currentUserName }) => {
   const {
     userName,
     timestamp,
@@ -22,15 +22,13 @@ const PostCard = ({ feed, docId, currentUser }) => {
   const [taps, setTaps] = useState(0);
 
   const handleTouchStart = () => {
-    // Increase tap count when touch starts
     setTaps((prevTaps) => prevTaps + 1);
   };
 
   const handleTouchEnd = () => {
-    // Reset tap count when touch ends
     setTimeout(() => {
       setTaps(0);
-    }, 300); // Adjust the delay as needed to define the maximum time between taps
+    }, 100);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +37,7 @@ const PostCard = ({ feed, docId, currentUser }) => {
         const cnt = await getLikeCount(docId);
         setLikeStatus(response);
         setLikesCount(cnt);
-        console.log(likeStatus);
+        //console.log(likeStatus);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -50,7 +48,7 @@ const PostCard = ({ feed, docId, currentUser }) => {
     try {
       setLikeStatus(!likeStatus);
       const response = await updateLikeStatus(docId, currentUser, !likeStatus);
-      console.log("while liking", likes);
+      //console.log("while liking", likes);
       if (!likeStatus == true) {
         setLikesCount(likesCount + 1);
       } else {
@@ -77,7 +75,7 @@ const PostCard = ({ feed, docId, currentUser }) => {
       <div>
         <p>{caption}</p>
       </div>
-      <div className="w-[600px] h-[480px] flex items-center justify-center relative">
+      <div className="w-[720px] h-[576px] flex items-center justify-center relative">
         <div
           className="absolute inset-0 flex items-center justify-center border"
           onDoubleClick={handleDoubleClick}
@@ -93,19 +91,20 @@ const PostCard = ({ feed, docId, currentUser }) => {
             src={imgUrl}
             alt=""
             fill={true}
-            sizes=""
             style={{ objectFit: "contain" }}
             priority={false}
             loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            quality={100}
           />
         </div>
       </div>
       <div>
         <LikeCommentBar
           postId={docId}
-          uid={userId}
           likeStatus={likeStatus}
           likesCount={likesCount}
+          currentUserName={currentUserName}
         />
       </div>
       <Separator />

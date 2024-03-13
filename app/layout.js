@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <ClerkProvider>
         <body className={inter.className}>
-          <div className="mx-32">
+          <div className="ml-32">
             <div className="flex">
               <SideBar />
               <div className="w-full">{children}</div>

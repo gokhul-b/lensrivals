@@ -4,7 +4,7 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 const SideBar = () => {
   return (
     <div className="flex h-screen">
-      <div className="border-r w-[320px] py-8 px-2 flex flex-col justify-between">
+      <div className="border-r w-[270px] py-8 px-2 flex flex-col justify-between">
         <div className="w-full">
           <p className="font-bold text-xl">
             Lens<span className="text-indigo-600">Rivals</span>

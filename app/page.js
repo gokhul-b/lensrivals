@@ -1,16 +1,19 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getFeeds } from "./action";
 import PostCard from "@/components/PostCard";
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 
 export default async function Home() {
   const feeds = await getFeeds();
   const { userId } = auth();
+  const userName = (await currentUser()).username;
   return (
     <div>
-      <div className="my-6">
-        <ScrollArea className="h-screen  w-[720px] rounded-md p-4">
-          <p className="font-bold text-2xl text-center mb-8">Feeds</p>
+      <div>
+        <ScrollArea className="h-screen  w-[800px] rounded-md px-1 relative">
+          <p className="py-3 font-semibold text-base text-center mb-8 bg-indigo-700 text-white mt-1 sticky top-1 z-10">
+            Feeds
+          </p>
           <div className="px-8">
             {feeds.map((feed) => (
               <PostCard
@@ -18,6 +21,7 @@ export default async function Home() {
                 feed={feed.data}
                 docId={feed.id}
                 currentUser={userId}
+                currentUserName={userName}
               />
             ))}
           </div>

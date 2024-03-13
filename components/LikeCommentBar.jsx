@@ -1,32 +1,34 @@
 "use client";
 import Liked from "./Liked";
-import CommentIcon from "@/svg/CommentIcon";
 import NotLiked from "./NotLiked";
-import { getLikeCount, getLikeStatus, updateLikeStatus } from "@/app/action";
-import { useEffect, useState } from "react";
+import CommentSection from "./CommentSection";
+import { useState } from "react";
 
-const LikeCommentBar = ({ postId, likeStatus, likesCount }) => {
-  const [isLiked, setIsLIked] = useState(likeStatus);
-  const [likesCnt, setLikesCnt] = useState(likesCount);
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const cnt = await getLikeCount(postId);
-    //     console.log(cnt);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // };
-    // fetchData();
-    setLikesCnt(likesCount);
-    setIsLIked(likeStatus);
-  }, [likeStatus, likesCount]);
+const LikeCommentBar = ({
+  postId,
+  likeStatus,
+  likesCount,
+  currentUserName,
+}) => {
+  const [commentCount, setCommentCount] = useState(0);
+
+  const handleDataFromChild = (data) => {
+    console.log(data);
+    setCommentCount(data);
+  };
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-4 ">
       <div className="flex space-x-2 items-center">
-        {isLiked ? <Liked /> : <NotLiked />} <span>{likesCnt}</span>
+        {likeStatus ? <Liked /> : <NotLiked />} <span>{likesCount}</span>
       </div>
-      <CommentIcon />
+      <div className="mt-1.5 flex items-center space-x-2">
+        <CommentSection
+          postId={postId}
+          currentUserName={currentUserName}
+          onData={handleDataFromChild}
+        />
+        <p className="mb-1.5">{commentCount}</p>
+      </div>
     </div>
   );
 };
