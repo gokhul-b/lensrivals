@@ -7,29 +7,28 @@ const UpcomingCard = ({ contest, idx }) => {
     <div className="space-y-2 mb-4 border p-4 rounded-xl bg-gray-900 text-white">
       <p className="text-xs text-muted-foreground">#{idx + 1} </p>
       <p>
-        Title: <span className="text-muted-foreground">{title}</span>
+        Title: <span className="text-slate-300">{title}</span>
       </p>
       <p className="text-sm">
-        Description:{" "}
-        <span className="text-muted-foreground">{description}</span>
+        Description: <span className="text-slate-300">{description}</span>
       </p>
       <div className="flex space-x-4 text-sm">
         <p>
-          Start date: <span className="text-muted-foreground">{startDate}</span>
+          Start date: <span className="text-slate-300">{startDate}</span>
         </p>
         <p>
-          Last date: <span className="text-muted-foreground">{endDate}</span>
+          Last date: <span className="text-slate-300">{endDate}</span>
         </p>
       </div>
       <div className="flex space-x-4 text-sm">
         <p>
-          First: <span className="text-muted-foreground">₹ {prize1}</span>
+          First: <span className="text-slate-300">₹ {prize1}</span>
         </p>
         <p>
-          Second: <span className="text-muted-foreground">₹ {prize2}</span>
+          Second: <span className="text-slate-300">₹ {prize2}</span>
         </p>
         <p>
-          Third: <span className="text-muted-foreground">₹ {prize3}</span>
+          Third: <span className="text-slate-300">₹ {prize3}</span>
         </p>
       </div>
     </div>

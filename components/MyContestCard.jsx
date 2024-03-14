@@ -2,9 +2,12 @@
 import { getContestById } from "@/app/action";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 const MyContestCard = ({ contestId, idx }) => {
   const [contestData, setContestData] = useState({});
+  const router = useRouter();
+
   useEffect(() => {
     const getContestData = async () => {
       try {
@@ -26,7 +29,14 @@ const MyContestCard = ({ contestId, idx }) => {
           <span className="text-xs text-muted-foreground ">#{idx + 1} </span>
           {title}
         </p>
-        <Button variant="outline" size="sm" className="text-xs text-gray-900">
+        <Button
+          variant="outline"
+          className="text-xs text-gray-900"
+          onClick={(e) => {
+            router.push(`/leaderboard/${contestId}`);
+          }}
+          size="sm"
+        >
           Leaderboard
         </Button>
       </div>

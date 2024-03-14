@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
+import { UserButton } from "./UserButton";
 
 const SideBar = () => {
   return (
@@ -14,9 +15,6 @@ const SideBar = () => {
               <Link href="/">Home</Link>
             </div>
             <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
-              <Link href="/myposts">My Posts</Link>
-            </div>
-            <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
               <Link href="/live">Live Contests</Link>
             </div>
             <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
@@ -25,15 +23,22 @@ const SideBar = () => {
             <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
               <Link href="/upcoming">Upcoming Contests</Link>
             </div>
+            <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
+              <Link href="/leaderboard">Leaderboard</Link>
+            </div>
+            <div className="w-full hover:border hover:rounded-2xl  px-4 py-3 hover:bg-indigo-600 hover:text-white">
+              <Link href="/myprofile">My Profile</Link>
+            </div>
           </div>
         </div>
         <div className="mb-5">
-          <SignedIn>
+          {/* <SignedIn>
             <div className="flex items-center">
               <UserButton />
               <p className="ml-2 font-bold">My Profile</p>
             </div>
-          </SignedIn>
+          </SignedIn> */}
+          <UserButton />
         </div>
       </div>
     </div>

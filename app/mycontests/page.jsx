@@ -10,13 +10,13 @@ const page = async () => {
   // console.log(mycontests);
   return (
     <div>
-      <ScrollArea className="h-screen w-[800px] rounded-md px-1 relative pt-1">
-        <p className="py-3 font-semibold text-base text-center mb-8 bg-indigo-700 text-white mt-1 sticky top-1 z-10">
+      <ScrollArea className="h-screen w-[800px] rounded-md px-1 relative">
+        <p className="py-3 font-semibold text-base text-center mb-8 bg-indigo-700 text-white sticky top-1 z-10">
           My Contests
         </p>
         <div className="px-8">
           {mycontests.map((contestId, index) => (
-            <MyContestCard key={index} contestId={contestId} idx={index}/>
+            <MyContestCard key={index} contestId={contestId} idx={index} />
           ))}
         </div>
       </ScrollArea>

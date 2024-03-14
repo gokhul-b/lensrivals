@@ -36,7 +36,6 @@ export const getUpcomingContest = async () => {
   try {
     const currentDate = new Date();
     const formattedCurrentDate = currentDate.toISOString().split("T")[0];
-    console.log(typeof formattedCurrentDate);
     const docRefs = collection(db, "competitions");
     const q = query(docRefs, where("startDate", ">=", formattedCurrentDate));
     const querySnapshot = await getDocs(q);
@@ -47,8 +46,32 @@ export const getUpcomingContest = async () => {
         data: doc.data(),
       });
     });
-    console.log("success");
     return upComingContests;
+  } catch (error) {
+    return error;
+  }
+};
+export const getPostData = async (contestId) => {
+  try {
+    const docRefs = collection(db, "posts");
+    const q = query(docRefs, where("contestId", "==", contestId));
+    const querySnapshot = await getDocs(q);
+    const postData = [];
+    querySnapshot.forEach((doc) => {
+      let data = doc.data();
+      let likesCount = Object.keys(data.likes).length;
+      let commentsCount = Object.keys(data.comments).length;
+      postData.push({
+        id: doc.id,
+        username: data.userName,
+        likesCnt: likesCount,
+        commentsCnt: commentsCount,
+        totalCredit: likesCount * 2 + commentsCount * 5,
+      });
+    });
+    const sortedData = postData.sort((a, b) => b.totalCredit - a.totalCredit);
+    console.log(postData);
+    return sortedData;
   } catch (error) {
     return error;
   }

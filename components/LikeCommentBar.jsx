@@ -19,7 +19,8 @@ const LikeCommentBar = ({
   return (
     <div className="flex items-center space-x-4 ">
       <div className="flex space-x-2 items-center">
-        {likeStatus ? <Liked /> : <NotLiked />} <span>{likesCount}</span>
+        <div className="mt-1">{likeStatus ? <Liked /> : <NotLiked />}</div>{" "}
+        <p>{likesCount}</p>
       </div>
       <div className="mt-1.5 flex items-center space-x-2">
         <CommentSection
