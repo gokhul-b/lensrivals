@@ -1,22 +1,19 @@
-import { auth } from "@clerk/nextjs";
 import React from "react";
-import { getMyContests } from "../action";
+import { getUpcomingContest } from "../action";
+import UpcomingCard from "@/components/UpcomingCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import MyContestCard from "@/components/MyContestCard";
 
 const page = async () => {
-  const { userId } = auth();
-  const mycontests = await getMyContests(userId);
-  // console.log(mycontests);
+  const contests = await getUpcomingContest();
   return (
     <div>
       <ScrollArea className="h-screen w-[800px] rounded-md px-1 relative pt-1">
         <p className="py-3 font-semibold text-base text-center mb-8 bg-indigo-700 text-white mt-1 sticky top-1 z-10">
-          My Contests
+          Upcoming Contests
         </p>
         <div className="px-8">
-          {mycontests.map((contestId, index) => (
-            <MyContestCard key={index} contestId={contestId} idx={index}/>
+          {contests.map((contest, index) => (
+            <UpcomingCard key={contest.id} contest={contest.data} idx={index} />
           ))}
         </div>
       </ScrollArea>

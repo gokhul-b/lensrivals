@@ -2,7 +2,7 @@
 import { query, orderBy, limit, getDoc, setDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firbase";
 import { collection, where, getDocs, addDoc, doc } from "firebase/firestore";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { runTransaction } from "firebase/firestore";
 import {
   ref,
@@ -15,7 +15,6 @@ export const getLiveCompList = async () => {
   try {
     const currentDate = new Date();
     const formattedCurrentDate = currentDate.toISOString().split("T")[0];
-    console.log(typeof formattedCurrentDate);
     const docRefs = collection(db, "competitions");
     const q = query(docRefs, where("endDate", ">=", formattedCurrentDate));
     const querySnapshot = await getDocs(q);
@@ -26,10 +25,31 @@ export const getLiveCompList = async () => {
         data: doc.data(),
       });
     });
-    console.log("success");
     return liveComps;
   } catch (error) {
     //console.error(error);
+    return error;
+  }
+};
+
+export const getUpcomingContest = async () => {
+  try {
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+    console.log(typeof formattedCurrentDate);
+    const docRefs = collection(db, "competitions");
+    const q = query(docRefs, where("startDate", ">=", formattedCurrentDate));
+    const querySnapshot = await getDocs(q);
+    const upComingContests = [];
+    querySnapshot.forEach((doc) => {
+      upComingContests.push({
+        id: doc.id,
+        data: doc.data(),
+      });
+    });
+    console.log("success");
+    return upComingContests;
+  } catch (error) {
     return error;
   }
 };
@@ -61,6 +81,7 @@ export const joinContest = async (form) => {
     const docRef = await addDoc(collection(db, "posts"), form);
     //console.log(docRef.id);
     const postId = docRef.id;
+    revalidatePath("/");
     return postId;
   } catch (e) {
     return e;
@@ -188,14 +209,43 @@ export const addToMyPosts = async (userId, postId) => {
 
       await setDoc(userRef, { posts: updatedPosts });
       //console.log(`Post ${postId} added to user ${userId}`);
+      return `Post ${postId} added to user ${userId}`;
     } else {
       // If the user document doesn't exist, create a new one
       // await userRef.set({ posts: [postId] });
       await setDoc(userRef, { posts: [postId] });
       //console.log(`User ${userId} created with post ${postId}`);
+      return `User ${userId} created with post ${postId}`;
     }
   } catch (error) {
     //console.error("Error updating posts:", error);
+    return error;
+  }
+};
+
+export const addToMyContest = async (userId, contestId) => {
+  try {
+    const userRef = doc(db, "mycontests", userId);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      const updatedPosts = [...userData.contests, contestId];
+
+      await setDoc(userRef, { contests: updatedPosts });
+      //console.log(`Post ${postId} added to user ${userId}`);
+      revalidatePath("/myposts");
+      return `Contest ${contestId} added to user ${userId}`;
+    } else {
+      // If the user document doesn't exist, create a new one
+      // await userRef.set({ posts: [postId] });
+      await setDoc(userRef, { contests: [contestId] });
+      //console.log(`User ${userId} created with post ${postId}`);
+      return `User ${userId} created with contest ${contestId}`;
+    }
+  } catch (error) {
+    //console.error("Error updating posts:", error);
+    return error;
   }
 };
 
@@ -224,6 +274,19 @@ export const getMyPosts = async (userId) => {
     //console.log("No such document!");
     let noPosts = [];
     return noPosts;
+  }
+};
+
+export const getMyContests = async (userId) => {
+  const docRef = doc(db, "mycontests", userId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let mycontests = docSnap.data().contests;
+    return mycontests;
+  } else {
+    //console.log("No such document!");
+    let noContests = [];
+    return noContests;
   }
 };
 
@@ -258,5 +321,17 @@ export const addComment = async (postId, currentUser, comment) => {
   } catch (e) {
     //console.log("Transaction failed: ", e);
     return e;
+  }
+};
+
+export const getContestById = async (contestId) => {
+  const contestRef = doc(db, "competitions", contestId);
+  const docSnap = await getDoc(contestRef);
+  if (docSnap.exists()) {
+    let data = docSnap.data();
+    return data;
+  } else {
+    //console.log("No such document!");
+    return "No such document!";
   }
 };

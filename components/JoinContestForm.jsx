@@ -1,5 +1,6 @@
 "use client";
 import {
+  addToMyContest,
   addToMyPosts,
   deleteImage,
   generateRandomId,
@@ -36,6 +37,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
   const [dateTime, setDateTime] = useState(new Date().toISOString());
   const router = useRouter();
   const [isJoined, setIsJoined] = useState(false);
+  const [completionStatus, setCompletionStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     caption: "",
@@ -121,6 +123,9 @@ const JoinContestForm = ({ contestId, username, userId }) => {
   };
 
   const handleFormSubmit = async () => {
+    if (completionStatus) {
+      return;
+    }
     if (imageUrl === "" || form.caption === "" || form.location === "") {
       alert("Some inputs are unfilled");
       return;
@@ -128,7 +133,6 @@ const JoinContestForm = ({ contestId, username, userId }) => {
     setForm({ ...form, timestamp: dateTime });
     try {
       setIsLoading(true);
-      //console.log(form);
       const postId = await joinContest(form);
       console.log("postId => ", postId);
       const responseForContestUpdate = await updateContestParticipants(
@@ -138,9 +142,11 @@ const JoinContestForm = ({ contestId, username, userId }) => {
       );
       console.log("responseForContestUpdate => ", responseForContestUpdate);
       const responseForMyPosts = await addToMyPosts(userId, postId);
+      const responseForMyContests = await addToMyContest(userId, contestId);
+      setCompletionStatus(true);
       console.log(responseForMyPosts);
     } catch (error) {
-      //console.error(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
       router.push("/success");

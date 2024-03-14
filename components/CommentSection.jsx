@@ -78,7 +78,7 @@ const CommentSection = ({ postId, currentUserName, onData }) => {
                     }}
                   />
                   <Button
-                    className="max-w-full rounded-full bg-indigo-700"
+                    className="max-w-full rounded-full bg-indigo-700 hover:bg-indigo-600"
                     onClick={handleAddComment}
                   >
                     {isLoading ? "..." : <RightArrow />}

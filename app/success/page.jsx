@@ -18,8 +18,10 @@ const page = () => {
           </svg>
           <p>You have successfully entered the Contest</p>
         </div>
-        <div className="bg-indigo-700 max-w-fit px-3 py-2.5 rounded-md text-white">
-          <Link href={"/"}>Back to feed</Link>
+        <div className="bg-indigo-700 max-w-fit px-3 py-1.5 rounded-md text-white">
+          <Link href={"/"} className="text-xs">
+            Back to feed
+          </Link>
         </div>
       </div>
     </div>
