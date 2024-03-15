@@ -31,7 +31,7 @@ const SideBar = () => {
             </div>
           </div>
         </div>
-        <div className="mb-5">
+        <div>
           {/* <SignedIn>
             <div className="flex items-center">
               <UserButton />

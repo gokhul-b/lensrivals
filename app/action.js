@@ -272,6 +272,23 @@ export const addToMyContest = async (userId, contestId) => {
   }
 };
 
+export const updateProfile = async (userId, form) => {
+  try {
+    const userRef = doc(db, "profiles", userId);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      await setDoc(userRef, form);
+      return `Profile updated to user ${userId}`;
+    } else {
+      await setDoc(userRef, form);
+      return `Profile updated to user ${userId}`;
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getJoinStatus = async (contestId, userId) => {
   const docRef = doc(db, "competitions", contestId);
   const docSnap = await getDoc(docRef);
@@ -297,6 +314,31 @@ export const getMyPosts = async (userId) => {
     //console.log("No such document!");
     let noPosts = [];
     return noPosts;
+  }
+};
+
+export const getProfileData = async (userId) => {
+  const docRef = doc(db, "profiles", userId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let profileData = docSnap.data();
+    return profileData;
+  } else {
+    //console.log("No such document!");
+    let noProfile = {};
+    return noProfile;
+  }
+};
+export const getProfileImage = async (userId) => {
+  const docRef = doc(db, "profiles", userId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    let profileUrl = docSnap.data().imgUrl;
+    return profileUrl;
+  } else {
+    //console.log("No such document!");
+    let noProfile = "";
+    return noProfile;
   }
 };
 

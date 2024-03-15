@@ -5,7 +5,7 @@ const PostGrid = ({ myposts }) => {
   //console.log(myposts);
   return (
     <div>
-      <div className="grid grid-cols-4">
+      <div className="flex space-x-4">
         {myposts.map((postId) => (
           <ImageBlock key={postId} postId={postId} />
         ))}

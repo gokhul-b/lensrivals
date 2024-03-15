@@ -47,13 +47,13 @@ const PostCard = ({ feed, docId, currentUser, currentUserName }) => {
   const handleDoubleClick = async () => {
     try {
       setLikeStatus(!likeStatus);
-      const response = await updateLikeStatus(docId, currentUser, !likeStatus);
-      //console.log("while liking", likes);
       if (!likeStatus == true) {
         setLikesCount(likesCount + 1);
       } else {
         setLikesCount(likesCount - 1);
       }
+      const response = await updateLikeStatus(docId, currentUser, !likeStatus);
+      //console.log("while liking", likes);
     } catch (error) {
       console.log(error);
     }
