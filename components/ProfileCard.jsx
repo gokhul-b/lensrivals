@@ -54,7 +54,7 @@ const ProfileCard = ({ userId, username }) => {
             </Avatar>
           </div>
           <div>
-            <p className="font-bold">Gokhul B</p>
+            <p className="font-bold">{profileData.name}</p>
             <div className="text-sm text-muted-foreground font-medium w-[480px]">
               <p>@{profileData.userName}</p>
               <p>{profileData.bio}</p>
