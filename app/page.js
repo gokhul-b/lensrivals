@@ -14,7 +14,7 @@ export default async function Home() {
           <p className="py-3 font-semibold text-base text-center mb-8 bg-indigo-700 text-white mt-1 sticky top-1 z-10 hidden md:block">
             Feeds
           </p>
-          <div className="lg:px-8 px-1">
+          <div className="lg:px-8 px-1 lg:pt-0 pt-2">
             {feeds.map((feed) => (
               <PostCard
                 key={feed.id}

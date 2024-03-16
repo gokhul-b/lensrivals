@@ -77,7 +77,7 @@ const PostCard = ({ feed, docId, currentUser, currentUserName }) => {
       <div>
         <p className="lg:text-base text-xs">{caption}</p>
       </div>
-      <div className="lg:w-[720px] lg:h-[576px] w-[345px] h-[276px] flex items-center justify-center relative">
+      <div className="lg:w-[720px] lg:h-[576px] w-full h-[276px] flex items-center justify-center relative">
         <div
           className="absolute inset-0 flex items-center justify-center border"
           onDoubleClick={handleDoubleClick}

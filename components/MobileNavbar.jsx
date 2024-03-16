@@ -20,13 +20,13 @@ const MobileNavbar = () => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-between p-2 items-center">
+    <div className="flex justify-between p-2 items-center border-b">
       <Sheet>
         <SheetTrigger>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="14"
-            width="12.25"
+            height="24"
+            width="21"
             viewBox="0 0 448 512"
             className="fill-indigo-700"
           >
@@ -56,7 +56,7 @@ const MobileNavbar = () => {
           </div>
         </SheetContent>
       </Sheet>
-      <p className="font-bold text-base">
+      <p className="font-bold text-2xl">
         Lens<span className="text-indigo-600">Rivals</span>
       </p>
       <div
@@ -66,8 +66,8 @@ const MobileNavbar = () => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          height="16"
-          width="16"
+          height="24"
+          width="24"
           viewBox="0 0 512 512"
           className="fill-indigo-700"
         >
