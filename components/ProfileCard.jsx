@@ -36,8 +36,8 @@ const ProfileCard = ({ userId, username }) => {
             <div className="text-sm text-muted-foreground font-medium w-[480px]">
               <p>@{username}</p>
               <p>
-                Capturing moments one frame at a time 📸 | Photography
-                enthusiast | Exploring the world through my lens | #LensRivals
+                If you're new to Lensrivals, please update your profile by
+                simply clicking the "Edit Profile" button.
               </p>
             </div>
             <div className="mt-6">

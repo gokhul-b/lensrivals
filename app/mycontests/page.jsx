@@ -14,11 +14,17 @@ const page = async () => {
         <p className="py-3 font-semibold text-base text-center mb-8 bg-indigo-700 text-white sticky z-10">
           My Contests
         </p>
-        <div className="px-8">
-          {mycontests.map((contestId, index) => (
-            <MyContestCard key={index} contestId={contestId} idx={index} />
-          ))}
-        </div>
+        {Object.keys(mycontests).length > 0 ? (
+          <div className="px-8">
+            {mycontests.map((contestId, index) => (
+              <MyContestCard key={index} contestId={contestId} idx={index} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-center">
+            Yet you have not joined any contests.
+          </p>
+        )}
       </ScrollArea>
     </div>
   );

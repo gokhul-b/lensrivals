@@ -19,7 +19,7 @@ const page = async () => {
       {myposts.length > 0 ? (
         <PostGrid myposts={myposts} />
       ) : (
-        <p className="text-center font-semibold">Yet no posts created</p>
+        <p className="text-sm text-center">Yet you have not posted any post.</p>
       )}
     </div>
   );
