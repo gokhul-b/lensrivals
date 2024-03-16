@@ -8,7 +8,7 @@ const page = async ({ params }) => {
   const user = await currentUser();
 
   return (
-    <div className="py-8 px-8 space-y-8">
+    <div className="lg:p-8 p-1 space-y-8">
       <JoinContestForm
         contestId={params.id}
         username={user.username}

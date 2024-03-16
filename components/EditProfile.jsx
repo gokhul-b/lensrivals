@@ -142,11 +142,15 @@ export function EditProfile({ userId, userName }) {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="text-xs font-bold h-8">
+        <Button
+          variant="outline"
+          size="sm"
+          className="lg:text-xs text-[10px] font-bold lg:h-8 h-6"
+        >
           Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="lg:w-[425px] w-screen">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>

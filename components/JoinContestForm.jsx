@@ -159,7 +159,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
         <p>Already Joined</p>
       ) : (
         <div>
-          <div className="mb-8">
+          <div className="lg:mb-8 mb-2">
             <Button
               onClick={() => {
                 hanleRemove(), router.push("/live");
@@ -170,18 +170,20 @@ const JoinContestForm = ({ contestId, username, userId }) => {
             </Button>
           </div>
           <Card>
-            <CardHeader>
-              <CardTitle>Enter the Contest with Your Best Shot!</CardTitle>
+            <CardHeader className="lg:p-6 p-2">
+              <CardTitle className="lg:text-2xl text-lg">
+                Enter the Contest with Your Best Shot!
+              </CardTitle>
               <CardDescription>
                 By uploading your image, you're joining the contest! Your photo
                 will be showcased to the community, and its success depends on
                 the likes it receives. Are you ready to make your mark?
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="w-full flex space-x-8 mt-4">
-                <div>
-                  <div className="w-[400px] h-[400px] border rounded-lg shadow-md flex items-center justify-center relative">
+            <CardContent className="lg:p-6 p-2">
+              <div className="w-full flex lg:flex-row flex-col lg:space-x-8 space-y-4 mt-4">
+                <div className="flex flex-col items-center">
+                  <div className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] border rounded-lg shadow-md flex items-center justify-center relative">
                     {imageUrl ? (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <Image
@@ -205,32 +207,32 @@ const JoinContestForm = ({ contestId, username, userId }) => {
                       </div>
                     )}
                   </div>
-                  <div className="mt-8 flex items-center justify-between">
-                    <div>
-                      <Button
-                        onClick={() =>
-                          document.getElementById("fileInput").click()
-                        }
-                        className="bg-indigo-600 hover:bg-indigo-500"
-                        disabled={uploadState === "completed"}
-                      >
-                        Add Image
-                      </Button>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        style={{ display: "none" }}
-                        onChange={handleImageUpload}
-                      />
-                    </div>
-                    <div>
-                      <Button onClick={hanleRemove} variant="destructive">
-                        Remove
-                      </Button>
-                    </div>
+                </div>
+                <div className="lg:mt-8 mt-4 flex items-center justify-between">
+                  <div>
+                    <Button
+                      onClick={() =>
+                        document.getElementById("fileInput").click()
+                      }
+                      className="bg-indigo-600 hover:bg-indigo-500"
+                      disabled={uploadState === "completed"}
+                    >
+                      Add Image
+                    </Button>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      style={{ display: "none" }}
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                  <div>
+                    <Button onClick={hanleRemove} variant="destructive">
+                      Remove
+                    </Button>
                   </div>
                 </div>
-                <div className="w-full flex flex-col space-y-12">
+                <div className="w-full flex flex-col lg:space-y-12 space-y-4">
                   <form className="flex flex-col w-full space-y-12">
                     <div className="space-y-4">
                       <div className="flex flex-col w-full space-y-4">

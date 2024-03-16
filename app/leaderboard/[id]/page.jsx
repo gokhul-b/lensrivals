@@ -8,7 +8,7 @@ const page = async ({ params }) => {
   const contestId = params.id;
   const postData = await getPostData(contestId);
   return (
-    <div className="py-8 px-8">
+    <div className="lg:p-8 p-2">
       <p className="font-semibold text-base text-gray-800">
         Contest Id:{" "}
         <span className="text-muted-foreground text-sm">#{contestId}</span>

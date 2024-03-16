@@ -23,7 +23,7 @@ const MyContestCard = ({ contestId, idx }) => {
   const { title, description, startDate, endDate, prize1, prize2, prize3 } =
     contestData;
   return (
-    <div className="w-[640px] border p-4 rounded-xl space-y-6 bg-gray-800 text-white mb-4">
+    <div className="lg:w-[640px] sm:w-[360px] border p-4 rounded-xl lg:space-y-6 space-y-3 bg-gray-800 text-white mb-4">
       <div className="flex justify-between items-end">
         <p className="text-lg font-semibold">
           <span className="text-xs text-muted-foreground ">#{idx + 1} </span>
@@ -40,9 +40,9 @@ const MyContestCard = ({ contestId, idx }) => {
           Leaderboard
         </Button>
       </div>
-      <div className="flex items-end justify-between">
-        <div className="flex space-x-4 text-sm font-semibold text-gray-800">
-          <div className="bg-[#FFD43B] px-3 py-1 rounded-lg">
+      <div className="lg:flex lg:items-end lg:justify-between">
+        <div className="flex space-x-4 lg:text-sm text-xs font-semibold text-gray-800">
+          <div className="bg-[#FFD43B] px-1.5 py-1 rounded-lg">
             <p>₹ {prize1}</p>
           </div>
           <div className="bg-[#C0C0C0] px-3 py-1 rounded-lg">
@@ -53,7 +53,7 @@ const MyContestCard = ({ contestId, idx }) => {
           </div>
         </div>
 
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 lg:mt-0 mt-2">
           <p className="text-xs">
             <span className=" text-muted-foreground">Start Date: </span>
             {startDate}

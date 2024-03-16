@@ -28,7 +28,7 @@ const PostCard = ({ feed, docId, currentUser, currentUserName }) => {
   const handleTouchEnd = () => {
     setTimeout(() => {
       setTaps(0);
-    }, 100);
+    }, 200);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +59,7 @@ const PostCard = ({ feed, docId, currentUser, currentUserName }) => {
     }
   };
   return (
-    <div className="flex flex-col space-y-4 mb-4">
+    <div className="flex flex-col lg:space-y-4 space-y-2 mb-4">
       <div className="flex space-x-2">
         <div>
           <Avatar>
@@ -68,14 +68,16 @@ const PostCard = ({ feed, docId, currentUser, currentUserName }) => {
           </Avatar>
         </div>
         <div>
-          <p className="font-semibold">{userName}</p>
-          <p className=" text-muted-foreground text-xs">{timestamp}</p>
+          <p className="font-semibold lg:text-base text-sm">{userName}</p>
+          <p className=" text-muted-foreground lg:text-xs text-[10px] ">
+            {timestamp}
+          </p>
         </div>
       </div>
       <div>
-        <p>{caption}</p>
+        <p className="lg:text-base text-xs">{caption}</p>
       </div>
-      <div className="w-[720px] h-[576px] flex items-center justify-center relative">
+      <div className="lg:w-[720px] lg:h-[576px] w-[345px] h-[276px] flex items-center justify-center relative">
         <div
           className="absolute inset-0 flex items-center justify-center border"
           onDoubleClick={handleDoubleClick}

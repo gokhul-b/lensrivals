@@ -22,7 +22,7 @@ const page = async () => {
   }
   // console.log(data);
   return (
-    <div className="py-8 px-8">
+    <div className="lg:p-8 p-2">
       <p className="font-semibold text-xl text-gray-800">Leaderboard</p>
       <div className="mt-4">
         <Separator />

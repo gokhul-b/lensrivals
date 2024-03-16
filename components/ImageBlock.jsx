@@ -5,7 +5,7 @@ const ImageBlock = async ({ postId }) => {
   //   //console.log(postId, "postId from imageblock");
   const imageUrl = await getImage(postId);
   return (
-    <div className="h-[160px] w-[160px] flex items-center justify-center relative border rounded-2xl">
+    <div className="lg:h-[160px] lg:w-[160px] h-[100px] w-[100px] flex items-center justify-center relative border lg:rounded-2xl rounded-lg lg:mr-2 lg:mt-2 mr-1 mt-1">
       <div className="absolute inset-0 flex items-center justify-center">
         <Image
           src={imageUrl}
@@ -16,7 +16,7 @@ const ImageBlock = async ({ postId }) => {
           priority={false}
           // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           quality={100}
-          className="rounded-2xl"
+          className="lg:rounded-2xl rounded-lg"
         />
       </div>
     </div>
