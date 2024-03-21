@@ -145,6 +145,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
       const responseForMyContests = await addToMyContest(userId, contestId);
       setCompletionStatus(true);
       console.log(responseForMyPosts);
+      console.log(responseForMyContests);
     } catch (error) {
       console.error(error);
     } finally {
@@ -182,7 +183,7 @@ const JoinContestForm = ({ contestId, username, userId }) => {
             </CardHeader>
             <CardContent className="lg:p-6 p-2">
               <div className="w-full flex lg:flex-row flex-col lg:space-x-8 space-y-4 mt-4">
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col">
                   <div className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] border rounded-lg shadow-md flex items-center justify-center relative">
                     {imageUrl ? (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -207,29 +208,29 @@ const JoinContestForm = ({ contestId, username, userId }) => {
                       </div>
                     )}
                   </div>
-                </div>
-                <div className="lg:mt-8 mt-4 flex items-center justify-between">
-                  <div>
-                    <Button
-                      onClick={() =>
-                        document.getElementById("fileInput").click()
-                      }
-                      className="bg-indigo-600 hover:bg-indigo-500"
-                      disabled={uploadState === "completed"}
-                    >
-                      Add Image
-                    </Button>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      style={{ display: "none" }}
-                      onChange={handleImageUpload}
-                    />
-                  </div>
-                  <div>
-                    <Button onClick={hanleRemove} variant="destructive">
-                      Remove
-                    </Button>
+                  <div className="lg:mt-8 mt-4 flex justify-between">
+                    <div className="flex justify-between">
+                      <Button
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                        className="bg-indigo-600 hover:bg-indigo-500"
+                        disabled={uploadState === "completed"}
+                      >
+                        Add Image
+                      </Button>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: "none" }}
+                        onChange={handleImageUpload}
+                      />
+                    </div>
+                    <div>
+                      <Button onClick={hanleRemove} variant="destructive">
+                        Remove
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 <div className="w-full flex flex-col lg:space-y-12 space-y-4">

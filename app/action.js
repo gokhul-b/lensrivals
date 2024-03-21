@@ -104,7 +104,6 @@ export const joinContest = async (form) => {
     const docRef = await addDoc(collection(db, "posts"), form);
     //console.log(docRef.id);
     const postId = docRef.id;
-    revalidatePath("/");
     return postId;
   } catch (e) {
     return e;
@@ -257,7 +256,7 @@ export const addToMyContest = async (userId, contestId) => {
 
       await setDoc(userRef, { contests: updatedPosts });
       //console.log(`Post ${postId} added to user ${userId}`);
-      revalidatePath("/myposts");
+      // revalidatePath("/myposts");
       return `Contest ${contestId} added to user ${userId}`;
     } else {
       // If the user document doesn't exist, create a new one
@@ -305,6 +304,7 @@ export const getJoinStatus = async (contestId, userId) => {
 };
 
 export const getMyPosts = async (userId) => {
+  console.log("hi");
   const docRef = doc(db, "myposts", userId);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {

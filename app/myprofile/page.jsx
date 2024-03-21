@@ -9,6 +9,8 @@ const page = async () => {
   const { userId } = auth();
   const username = (await currentUser()).username;
   const myposts = await getMyPosts(userId);
+  console.log(myposts);
+  console.log(userId);
   return (
     <div className="lg:p-8 p-2">
       <ProfileCard userId={userId} username={username} />
